@@ -48,20 +48,20 @@ module.exports = function (router) {
 		const { name } = ctx.request.body;
 		console.log('PUT /departments:', departmentId, name);
 		try {
+			if (!(await Department.exists({ _id: departmentId }))) {
+				ctx.status = 404;
+				ctx.body = { message: 'Department not found!' };
+				return;
+			}
+
 			const updateResult = await Department.updateOne(
 				{ _id: departmentId },
 				{ $set: { name } },
 				{ omitUndefined: true }
 			).exec();
 
-			if (updateResult.nModified === 0) {
-				ctx.status = 404;
-				ctx.body = { message: 'Department not found!' };
-				return;
-			}
-
 			ctx.status = 200;
-			ctx.body = { updated: true };
+			ctx.body = { updated: updateResult.nModified === 1 };
 		} catch (err) {
 			console.error(err.message);
 			setStatus500(ctx);
@@ -72,17 +72,18 @@ module.exports = function (router) {
 		const departmentId = ctx.params.id;
 		console.log('DELETE /departments:', departmentId);
 		try {
-			const deleteResult = await Department.deleteOne({
-				_id: departmentId,
-			}).exec();
-
-			if (deleteResult.deletedCount === 0) {
+			if (!(await Department.exists({ _id: departmentId }))) {
 				ctx.status = 404;
 				ctx.body = { message: 'Department not found!' };
 				return;
 			}
+
+			const deleteResult = await Department.deleteOne({
+				_id: departmentId,
+			}).exec();
+
 			ctx.status = 200;
-			ctx.body = { deleted: true };
+			ctx.body = { deleted: deleteResult.deletedCount === 1 };
 		} catch (err) {
 			console.error(err.message);
 			setStatus500(ctx);

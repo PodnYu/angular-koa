@@ -100,20 +100,20 @@ module.exports = function (router) {
 		if (!isEmployeeValid(ctx, { departmentId, joinDate })) return;
 
 		try {
+			if (!(await Employee.exists({ _id: employeeId }))) {
+				ctx.status = 404;
+				ctx.body = { message: 'Employee not found!' };
+				return;
+			}
+
 			const updateResult = await Employee.updateOne(
 				{ _id: employeeId },
 				{ $set: { name, department: departmentId, joinDate, photoFileName } },
 				{ omitUndefined: true }
 			).exec();
 
-			if (updateResult.nModified === 0) {
-				ctx.status = 404;
-				ctx.body = { message: 'Employee not found!' };
-				return;
-			}
-
 			ctx.status = 200;
-			ctx.body = { updated: true };
+			ctx.body = { updated: updateResult.nModified === 1 };
 		} catch (err) {
 			console.error(err.message);
 			setStatus500(ctx);
@@ -124,17 +124,18 @@ module.exports = function (router) {
 		const employeeId = ctx.params.id;
 		console.log('DELETE /employees:', employeeId);
 		try {
-			const deleteResult = await Employee.deleteOne({
-				_id: employeeId,
-			}).exec();
-
-			if (deleteResult.deletedCount === 0) {
+			if (!(await Employee.exists({ _id: employeeId }))) {
 				ctx.status = 404;
 				ctx.body = { message: 'Employee not found!' };
 				return;
 			}
+
+			const deleteResult = await Employee.deleteOne({
+				_id: employeeId,
+			}).exec();
+
 			ctx.status = 200;
-			ctx.body = { deleted: true };
+			ctx.body = { deleted: deleteResult.deletedCount === 1 };
 		} catch (err) {
 			console.error(err.message);
 			setStatus500(ctx);
