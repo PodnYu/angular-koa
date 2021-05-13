@@ -1,0 +1,159 @@
+<button
+  type="button"
+  class="btn btn-primary float-right m-2"
+  data-toggle="modal"
+  data-target="#exampleModal"
+  data-backdrop="static"
+  data-keyboard="false"
+  (click)="addEmployeeButtonClick()"
+>
+  Add Employee
+</button>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="employee-name-input">Employee Name:</label>
+            <input
+              id="employee-name-input"
+              type="text"
+              class="form-control"
+              [(ngModel)]="name"
+              name="employee-name"
+              placeholder="Enter Employee Name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="department-name-input">Department Name:</label>
+            <!-- <input
+              id="department-name-input"
+              type="text"
+              class="form-control"
+              [(ngModel)]="department"
+              name="department-name"
+              placeholder="Enter Department Name"
+            /> -->
+            <select
+              class="form-control"
+              id="department-name-input"
+              [(ngModel)]="departmentId"
+              name="department-name"
+            >
+              <option
+                *ngFor="let department of departments"
+                value="{{ department._id }}"
+              >
+                {{ department.name }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="join-date-input">Join Date:</label>
+            <input
+              id="join-date-input"
+              type="date"
+              class="form-control"
+              [(ngModel)]="joinDate"
+              name="department-name"
+              placeholder="Enter Join Date"
+            />
+          </div>
+          <div class="form-group">
+            <label for="photo-filename-input">Photo Name:</label>
+            <input
+              id="photo-filename-input"
+              type="text"
+              class="form-control"
+              [(ngModel)]="photoFileName"
+              name="photo-file-name"
+              placeholder="Enter Photo Filename"
+            />
+          </div>
+          <div class="float-right">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary ml-2"
+              *ngIf="employee.isNew; else update"
+              (click)="addEmployee()"
+            >
+              Add
+            </button>
+            <ng-template #update>
+              <button
+                type="button"
+                class="btn btn-primary ml-2"
+                (click)="updateEmployee()"
+              >
+                Update
+              </button>
+            </ng-template>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Employee Id</th>
+      <th>Employee Name</th>
+      <th>Department</th>
+      <th>Join Date</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of employees">
+      <td>{{ employee._id }}</td>
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.department?.name }}</td>
+      <td>{{ employee.joinDate }}</td>
+      <td>
+        <button
+          class="btn btn-primary mr-1"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-backdrop="static"
+          data-keyboard="false"
+          (click)="editEmployeeButtonClick(employee)"
+        >
+          Edit
+        </button>
+        <button
+          class="btn btn-danger mr-1"
+          (click)="deleteEmployeeButtonClick(employee)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

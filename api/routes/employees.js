@@ -39,7 +39,9 @@ module.exports = function (router) {
 	router.get('/employees', async (ctx) => {
 		console.log('GET /employees');
 		try {
-			const employees = await Employee.find({}).exec();
+			const employees = await Employee.find({})
+				.populate('department', 'name')
+				.exec();
 
 			ctx.status = 200;
 			ctx.body = { employees };
@@ -53,7 +55,9 @@ module.exports = function (router) {
 		const employeeId = ctx.params.id;
 		console.log('GET /employees/:id', employeeId);
 		try {
-			const employee = await Employee.find({ _id: employeeId }).exec();
+			const employee = await Employee.find({ _id: employeeId })
+				.populate('department', 'name')
+				.exec();
 
 			ctx.status = 200;
 			ctx.body = { employee };

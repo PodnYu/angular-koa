@@ -1,0 +1,35 @@
+<form>
+  <div class="form-group">
+    <label for="department-name-input">Department Name:</label>
+    <input
+      id="department-name-input"
+      type="text"
+      class="form-control"
+      [(ngModel)]="departmentName"
+      name="department-name"
+      placeholder="Enter Department Name"
+    />
+  </div>
+  <div class="float-right">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+      Close
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary ml-2"
+      *ngIf="department.isNew; else update"
+      (click)="addDepartmentButtonClick()"
+    >
+      Add
+    </button>
+    <ng-template #update>
+      <button
+        type="button"
+        class="btn btn-primary ml-2"
+        (click)="updateDepartmentButtonClick()"
+      >
+        Update
+      </button>
+    </ng-template>
+  </div>
+</form>

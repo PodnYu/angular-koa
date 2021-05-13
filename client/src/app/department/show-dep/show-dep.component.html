@@ -1,0 +1,113 @@
+<button
+  type="button"
+  class="btn btn-primary float-right m-2"
+  data-toggle="modal"
+  data-target="#exampleModal"
+  data-backdrop="static"
+  data-keyboard="false"
+  (click)="addDepartmentButtonClick()"
+>
+  Add Department
+</button>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <app-add-edit-dep
+          [department]="department"
+          (refreshDepartmentsEvent)="getDepartments()"
+        ></app-add-edit-dep> -->
+        <form>
+          <div class="form-group">
+            <label for="department-name-input">Department Name:</label>
+            <input
+              id="department-name-input"
+              type="text"
+              class="form-control"
+              [(ngModel)]="departmentName"
+              name="department-name"
+              placeholder="Enter Department Name"
+            />
+          </div>
+          <div class="float-right">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary ml-2"
+              *ngIf="department.isNew; else update"
+              (click)="addDepartment()"
+            >
+              Add
+            </button>
+            <ng-template #update>
+              <button
+                type="button"
+                class="btn btn-primary ml-2"
+                (click)="updateDepartment()"
+              >
+                Update
+              </button>
+            </ng-template>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Department Id</th>
+      <th>Department Name</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let department of departments">
+      <td>{{ department._id }}</td>
+      <td>{{ department.name }}</td>
+      <td>
+        <button
+          class="btn btn-primary mr-1"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-backdrop="static"
+          data-keyboard="false"
+          (click)="editDepartmentButtonClick(department)"
+        >
+          Edit
+        </button>
+        <button
+          class="btn btn-danger mr-1"
+          (click)="deleteDepartmentButtonClick(department)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
