@@ -4,7 +4,8 @@ const koaCors = require('@koa/cors');
 const koaBodyParser = require('koa-bodyparser');
 require('dotenv').config();
 const connectDB = require('./connectDB');
-const createDepartmentRoutes = require('./api/routes/department');
+const createDepartmentRoutes = require('./api/routes/departments');
+const createEmployeeRoutes = require('./api/routes/employees');
 
 const PORT = process.env.PORT || 5007;
 
@@ -14,6 +15,7 @@ const app = new Koa();
 const router = new KoaRouter();
 
 createDepartmentRoutes(router);
+createEmployeeRoutes(router);
 
 app.use(koaCors());
 app.use(koaBodyParser());

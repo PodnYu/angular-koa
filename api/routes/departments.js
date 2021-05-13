@@ -1,9 +1,5 @@
 const Department = require('../models/Department');
-
-function setStatus500(ctx) {
-	ctx.status = 500;
-	ctx.body = { message: 'Internal server error!' };
-}
+const { setStatus500 } = require('../utils/httpUtils');
 
 module.exports = function (router) {
 	router.get('/departments', async (ctx) => {
@@ -14,7 +10,7 @@ module.exports = function (router) {
 			ctx.status = 200;
 			ctx.body = { departments };
 		} catch (err) {
-			console.error(err.name);
+			console.error(err.message);
 			setStatus500(ctx);
 		}
 	});
@@ -28,7 +24,7 @@ module.exports = function (router) {
 			ctx.status = 200;
 			ctx.body = { department };
 		} catch (err) {
-			console.error(err.name);
+			console.error(err.message);
 			setStatus500(ctx);
 		}
 	});
@@ -42,7 +38,7 @@ module.exports = function (router) {
 			ctx.status = 200;
 			ctx.body = { _id: department.id };
 		} catch (err) {
-			console.error(err.name);
+			console.error(err.message);
 			setStatus500(ctx);
 		}
 	});
@@ -67,7 +63,7 @@ module.exports = function (router) {
 			ctx.status = 200;
 			ctx.body = { updated: true };
 		} catch (err) {
-			console.error(err.name);
+			console.error(err.message);
 			setStatus500(ctx);
 		}
 	});
@@ -88,7 +84,7 @@ module.exports = function (router) {
 			ctx.status = 200;
 			ctx.body = { deleted: true };
 		} catch (err) {
-			console.error(err.name);
+			console.error(err.message);
 			setStatus500(ctx);
 		}
 	});

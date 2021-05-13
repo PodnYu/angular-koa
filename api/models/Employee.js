@@ -1,19 +1,35 @@
 const mongoose = require('mongoose');
 
-const employeeSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: true,
+// YYYY-MM-DDTHH:mm:ss.sssZ
+
+const employeeSchema = new mongoose.Schema(
+	{
+		name: {
+			type: String,
+			required: true,
+		},
+		department: {
+			type: mongoose.Types.ObjectId,
+			required: true,
+			ref: 'Department',
+		},
+		joinDate: {
+			type: Date,
+			default: Date.now,
+		},
+		photoFileName: {
+			type: String,
+			default: 'anonymous.png',
+		},
 	},
-	department: {
-		type: mongoose.Types.ObjectId,
-		required: true,
-		ref: 'Department',
-	},
-	dateOfJoining: {
-		type: Date,
-	},
-	photoFileName: String,
-});
+	{
+		toJSON: {
+			transform: function (doc, ret) {
+				delete ret.__v;
+				return ret;
+			},
+		},
+	}
+);
 
 module.exports = mongoose.model('Employee', employeeSchema);

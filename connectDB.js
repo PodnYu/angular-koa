@@ -9,7 +9,7 @@ function connectDB() {
 		},
 		(err) => {
 			if (err) {
-				console.error(err.name);
+				console.error(err.message);
 				console.error('MongoDB is not connected!');
 				throw err;
 			} else {
