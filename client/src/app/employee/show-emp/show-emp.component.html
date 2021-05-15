@@ -80,15 +80,18 @@
             />
           </div>
           <div class="form-group">
-            <label for="photo-filename-input">Photo Name:</label>
+            <label for="photo-input">Photo Name:</label>
             <input
-              id="photo-filename-input"
-              type="text"
+              id="photo-input"
+              type="file"
               class="form-control"
-              [(ngModel)]="photoFileName"
-              name="photo-file-name"
-              placeholder="Enter Photo Filename"
+              name="photo-file"
+              placeholder="Upload Photo:"
+              (change)="uploadPhoto($event)"
             />
+          </div>
+          <div class="form-group">
+            <img [src]="photoFilePath" width="100" height="100" />
           </div>
           <div class="float-right">
             <button type="button" class="btn btn-danger" data-dismiss="modal">

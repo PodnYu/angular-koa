@@ -47,4 +47,8 @@ export class SharedService {
   deleteEmployee(id: string): Observable<any> {
     return this.http.delete<any>(`${this.employeeAPIUrl}${id}`);
   }
+
+  uploadPhoto(data) {
+    return this.http.post(`${this.employeeAPIUrl}uploadAvatar`, data);
+  }
 }

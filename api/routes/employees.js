@@ -2,6 +2,7 @@ const Employee = require('../models/Employee');
 const Department = require('../models/Department');
 const { setStatus500 } = require('../utils/httpUtils');
 const { isObjectIdValid } = require('../utils/mongoUtils');
+const fs = require('fs');
 
 function getEmployee(body) {
 	return {
@@ -144,5 +145,25 @@ module.exports = function (router) {
 			console.error(err.message);
 			setStatus500(ctx);
 		}
+	});
+
+	router.post('/employees/uploadAvatar', async (ctx) => {
+		console.log('POST /employees/uploadAvatar');
+		const { path, name } = ctx.request.files.avatar;
+
+		if (name !== 'anonymous.jpg') {
+			await new Promise((resolve, reject) => {
+				fs.rename(path, `./employeesAvatars/${name}`, (err) => {
+					if (err) {
+						reject(err);
+					} else {
+						resolve();
+					}
+				});
+			});
+		}
+
+		ctx.status = 200;
+		ctx.body = { uploaded: true };
 	});
 };

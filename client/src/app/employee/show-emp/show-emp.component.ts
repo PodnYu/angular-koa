@@ -10,6 +10,7 @@ export class ShowEmpComponent implements OnInit {
   employees: any[] = [];
   modalTitle = '';
   action = '';
+  photosPath = 'http://localhost:5007/employeesAvatars/';
 
   _id: string;
   name: string;
@@ -17,6 +18,7 @@ export class ShowEmpComponent implements OnInit {
   departmentId: string;
   photoFileName: string;
   isNew: boolean;
+  photoFilePath;
 
   departments = [];
 
@@ -33,7 +35,8 @@ export class ShowEmpComponent implements OnInit {
     this.name = '';
     this.joinDate = null;
     this.departmentId = null;
-    this.photoFileName = 'anonymous.png';
+    this.photoFileName = 'anonymous.jpg';
+    this.photoFilePath = this.photosPath + this.photoFileName;
     this.isNew = true;
   }
 
@@ -51,6 +54,7 @@ export class ShowEmpComponent implements OnInit {
     this.photoFileName = employee.photoFileName;
     this.departmentId = employee.department._id;
     this.isNew = false;
+    this.photoFilePath = this.photosPath + this.photoFileName;
     this.modalTitle = 'Update Department';
     this.action = 'Update';
   }
@@ -109,5 +113,22 @@ export class ShowEmpComponent implements OnInit {
         alert('Employee updated');
         this.getEmployees();
       });
+  }
+
+  uploadPhoto(event) {
+    const file = event.target.files[0];
+    console.log(file);
+    const formData = new FormData();
+    formData.append('avatar', file, file.name);
+    this.service.uploadPhoto(formData).subscribe((data: any) => {
+      console.log('file upload callback:', data);
+      if (data.err) {
+        this.photoFileName = 'anonymous.jpg';
+      } else {
+        this.photoFileName = file.name;
+      }
+
+      this.photoFilePath = `${this.photosPath}${this.photoFileName}`;
+    });
   }
 }
