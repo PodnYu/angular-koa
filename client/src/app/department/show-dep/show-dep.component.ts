@@ -18,6 +18,9 @@ export class ShowDepComponent implements OnInit {
   addEditFormOpened = false;
   departmentName = '';
 
+  departmentsWithoutFilter: any[] = [];
+  departmentNameFilterValue = '';
+
   constructor(private service: SharedService) {}
 
   ngOnInit(): void {
@@ -52,12 +55,22 @@ export class ShowDepComponent implements OnInit {
     }
   }
 
-  closeModalButtonClick() {}
+  departmentNameFilter() {
+    console.log('filter');
+    this.departments = this.departmentsWithoutFilter.filter((dep) => {
+      console.log(dep.name, this.departmentNameFilterValue);
+      return dep.name
+        .trim()
+        .toLowerCase()
+        .includes(this.departmentNameFilterValue.trim().toLowerCase());
+    });
+  }
 
   getDepartments() {
     this.service.getDepartments().subscribe((data) => {
       console.log(data);
       this.departments = data;
+      this.departmentsWithoutFilter = data;
     });
   }
 

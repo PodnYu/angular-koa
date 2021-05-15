@@ -1,14 +1,24 @@
-<button
-  type="button"
-  class="btn btn-primary float-right m-2"
-  data-toggle="modal"
-  data-target="#exampleModal"
-  data-backdrop="static"
-  data-keyboard="false"
-  (click)="addDepartmentButtonClick()"
->
-  Add Department
-</button>
+<div class="d-flex justify-content-between">
+  <div class="">
+    <input
+      placeholder="Filter"
+      class="form-control"
+      [(ngModel)]="departmentNameFilterValue"
+      (keyup)="departmentNameFilter()"
+    />
+  </div>
+  <button
+    type="button"
+    class="btn btn-primary float-right m-2"
+    data-toggle="modal"
+    data-target="#exampleModal"
+    data-backdrop="static"
+    data-keyboard="false"
+    (click)="addDepartmentButtonClick()"
+  >
+    Add Department
+  </button>
+</div>
 
 <div
   class="modal fade"
