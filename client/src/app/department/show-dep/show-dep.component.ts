@@ -56,13 +56,21 @@ export class ShowDepComponent implements OnInit {
   }
 
   departmentNameFilter() {
-    console.log('filter');
     this.departments = this.departmentsWithoutFilter.filter((dep) => {
-      console.log(dep.name, this.departmentNameFilterValue);
       return dep.name
         .trim()
         .toLowerCase()
         .includes(this.departmentNameFilterValue.trim().toLowerCase());
+    });
+  }
+
+  sortDepartments(asc: boolean) {
+    return this.departments.sort((a, b) => {
+      if (asc) {
+        return a.name > b.name ? 1 : a.name < b.name ? -1 : 0;
+      } else {
+        return a.name > b.name ? -1 : a.name < b.name ? 1 : 0;
+      }
     });
   }
 

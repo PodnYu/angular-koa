@@ -1,5 +1,5 @@
-<div class="d-flex justify-content-between">
-  <div class="">
+<div class="d-flex justify-content-between mt-3">
+  <div>
     <input
       placeholder="Filter"
       class="form-control"
@@ -7,17 +7,25 @@
       (keyup)="departmentNameFilter()"
     />
   </div>
-  <button
-    type="button"
-    class="btn btn-primary float-right m-2"
-    data-toggle="modal"
-    data-target="#exampleModal"
-    data-backdrop="static"
-    data-keyboard="false"
-    (click)="addDepartmentButtonClick()"
-  >
-    Add Department
-  </button>
+  <div>
+    <button class="btn btn-primary" (click)="sortDepartments(true)">Asc</button>
+    <button class="btn btn-danger" (click)="sortDepartments(false)">
+      Desc
+    </button>
+  </div>
+  <div>
+    <button
+      type="button"
+      class="btn btn-primary float-right m-2"
+      data-toggle="modal"
+      data-target="#exampleModal"
+      data-backdrop="static"
+      data-keyboard="false"
+      (click)="addDepartmentButtonClick()"
+    >
+      Add Department
+    </button>
+  </div>
 </div>
 
 <div
@@ -41,10 +49,6 @@
         </button>
       </div>
       <div class="modal-body">
-        <!-- <app-add-edit-dep
-          [department]="department"
-          (refreshDepartmentsEvent)="getDepartments()"
-        ></app-add-edit-dep> -->
         <form>
           <div class="form-group">
             <label for="department-name-input">Department Name:</label>
