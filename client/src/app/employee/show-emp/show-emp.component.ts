@@ -11,39 +11,34 @@ export class ShowEmpComponent implements OnInit {
   modalTitle = '';
   action = '';
 
-  _id = '';
-  name = '';
-  joinDate = null;
-  departmentId = null;
-  photoFileName = 'anonymous.png';
+  _id: string;
+  name: string;
+  joinDate;
+  departmentId: string;
+  photoFileName: string;
+  isNew: boolean;
 
   departments = [];
-
-  employee = {
-    _id: this._id,
-    name: this.name,
-    joinDate: this.joinDate,
-    department: this.departmentId,
-    photoFileName: this.photoFileName,
-    isNew: true,
-  };
 
   constructor(private service: SharedService) {}
 
   ngOnInit(): void {
+    this.initEmployee();
     this.getEmployees();
     this.getDepartments();
   }
 
+  initEmployee() {
+    this._id = '';
+    this.name = '';
+    this.joinDate = null;
+    this.departmentId = null;
+    this.photoFileName = 'anonymous.png';
+    this.isNew = true;
+  }
+
   addEmployeeButtonClick() {
-    this.employee = {
-      _id: this._id,
-      name: this.name,
-      joinDate: this.joinDate,
-      department: this.departmentId,
-      photoFileName: this.photoFileName,
-      isNew: true,
-    };
+    this.initEmployee();
     this.modalTitle = 'Add Employee';
     this.action = 'Add';
   }
@@ -52,11 +47,18 @@ export class ShowEmpComponent implements OnInit {
     console.log(employee);
     this._id = employee._id;
     this.name = employee.name;
-    this.joinDate = employee.joinDate;
+    this.joinDate = new Date(employee.joinDate);
     this.photoFileName = employee.photoFileName;
     this.departmentId = employee.department._id;
+    this.isNew = false;
     this.modalTitle = 'Update Department';
     this.action = 'Update';
+  }
+
+  setJoinDate(value) {
+    if (value) {
+      this.joinDate = new Date(value);
+    }
   }
 
   deleteEmployeeButtonClick(employee) {
@@ -70,7 +72,6 @@ export class ShowEmpComponent implements OnInit {
 
   getEmployees() {
     this.service.getEmployees().subscribe((data) => {
-      console.log(data);
       this.employees = data;
     });
   }
@@ -83,7 +84,6 @@ export class ShowEmpComponent implements OnInit {
   }
 
   addEmployee() {
-    console.log('add', this.employee);
     this.service
       .addEmployee({
         name: this.name,
@@ -97,10 +97,9 @@ export class ShowEmpComponent implements OnInit {
       });
   }
 
-  updateDepartment() {
-    console.log('update', this.employee);
+  updateEmployee() {
     this.service
-      .updateDepartment(this.employee._id, {
+      .updateEmployee(this._id, {
         name: this.name,
         joinDate: this.joinDate,
         photoFileName: this.photoFileName,
